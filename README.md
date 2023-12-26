@@ -13,7 +13,7 @@ ZRAM: Clear instructions, easy to setup, double your RAM-capacity
 sudo su
 ```
 
-2. Install ZRAM, in my BlueStar-Linux is only following packages:
+2. Install ZRAM, in my BlueStar-Linux are only following packages:
 ```
 pacman -S --needed --noconfirm zram-generator zstd gambas3-gb-compress \
 python-pyzstd python-zstandard zarchive lib32-zstd \
