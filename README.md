@@ -50,12 +50,13 @@ See also [zram module](https://docs.kernel.org/admin-guide/blockdev/zram.html) a
 ```
 modprobe zram
 
-zramctl /dev/zram0 --algorithm zstd --size 128GiB
+zramctl /dev/zram0 --algorithm lz4 --size 128GiB
 
 mkswap -U clear /dev/zram0
 
 swapon --priority 100 /dev/zram0
 ```
+* **Note:** you can use also `zstd` as compressiond algorithm instead of `lz4`, i prefer LZ4 because is much faster.
 
 2. To disable it again, either reboot or run:
 
@@ -91,7 +92,7 @@ nano /etc/udev/rules.d/99-zram.rules
 4. Insert following text and insert an empty line at end with the configuration-parameters:
 
 ```
-ACTION=="add", KERNEL=="zram0", ATTR{comp_algorithm}="zstd", ATTR{disksize}="128GiB", RUN="/usr/bin/mkswap -U clear /dev/%k", TAG+="systemd"
+ACTION=="add", KERNEL=="zram0", ATTR{comp_algorithm}="lz4", ATTR{disksize}="128GiB", RUN="/usr/bin/mkswap -U clear /dev/%k", TAG+="systemd"
 ```
 
 5. Now open `/etc/sftab`
@@ -133,7 +134,7 @@ zramctl --help
 
 ```
 NAME       DISKSIZE DATA COMPR ALGORITHM STREAMS ZERO-PAGES TOTAL MEM-LIMIT MEM-USED MIGRATED MOUNTPOINT
-/dev/zram0     128G   4K   41B zstd           16          0    4K        0B      16K       0B [SWAP]
+/dev/zram0     128G   4K   41B lz4           16          0    4K        0B      16K       0B [SWAP]
 
 ```
 
