@@ -56,8 +56,25 @@ GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 logo.nologo console=tty1 zswap.enabled=0"
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
+### 3. Presettings **"rEFInd"** 
 
-### 3. Presettings **"Systemdboot"** &&
+* **Note: ZSwap** will prevent to use ZRAM properly, so disable ZSwap permanently, see also [Arch-Wiki](https://wiki.archlinux.org/title/Kernel_parameters) & [Arch-Thread](https://bbs.archlinux.org/viewtopic.php?id=286116):
+
+* Don't forget to copy first the original file under .e.g.:  
+    `<file-name>.original` , so you can revert &|| undo it at each time!
+
+1. Kernel-CMD-Line modification
+
+* edit file: `/boot/efi/EFI/refind.conf` &|| `/boot/refind_linux.conf` [Arch-Wiki](https://wiki.archlinux.org/title/REFInd) for setting [kernel parameters](https://wiki.archlinux.org/title/Kernel_parameters). 
+* Look for the line `menuentry` on which is the title of your Linux-OS: `Arch Linux` or `ArcolinuxD`, `Bluestar Linux`, `EndeavourOS`, `Garuda Linux`, `Manjaro Linux`, etc., to set kernel-options. In the line `options` set as last option `zswap.enabled=0`. See my complete option-line below:
+
+```
+options "root=PARTUUID=028fa50-0079-4c40-b240-abfaf28693ea rw add_efi_memmap zswap.enabled=0"
+
+```
+* **Note:** Don't forget to save the file after your modifications, no other steps are required after `refind.conf` is saved.
+
+### 4. Presettings **"SystemD-Boot"** &&
 ZSwap will prevent to use ZRAM properly, so disable ZSwap permanently, see also [Arch-Wiki](https://wiki.archlinux.org/title/Kernel_parameters) & [EndeavourOS](https://discovery.endeavouros.com/installation/systemd-boot/2022/12/):
 
 * Don't forget to copy first the original file under .e.g.:  
@@ -83,7 +100,7 @@ reinstall-kernels
 
 * Now, if you open the files inside `/boot/efi/loader/entries/` you can see inside, of there stored files, all entries are modified exactly as above descrived.
 
-### 4. Configure ZRAM provisionally
+### 5. Configure ZRAM provisionally
 See also [zram module](https://docs.kernel.org/admin-guide/blockdev/zram.html) and differences between [ZSTD & LZ4](https://engineering.fb.com/2016/08/31/core-infra/smaller-and-faster-data-compression-with-zstandard/).
 
 1. Basic adjustments:
@@ -110,7 +127,7 @@ modprobe -r zram
 echo 1 > /sys/module/zswap/parameters/enabled
 ```
 
-### 5. Make Changes permanently using UDEV-rules like every other "Data-Carrier" (DC) too.
+### 6. Make Changes permanently using UDEV-rules like every other "Data-Carrier" (DC) too.
 
 1. Assure `zswap` kernel-module is disabled...
 * Check with:
@@ -158,7 +175,7 @@ nano /etc/fstab
 /dev/zram0  none    swap    defaults,pri=100    0   0
 ```
 
-### 6. Settings-Check and -Control
+### 7. Settings-Check and -Control
 
 1. Check the ZSWAP-module is disabled with:
 
