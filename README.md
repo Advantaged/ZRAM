@@ -101,21 +101,21 @@ reinstall-kernels
 * Now, if you open the files inside `/boot/efi/loader/entries/` you can see inside, of there stored files, all entries are modified exactly as above descrived.
 
 ### 5. Configure ZRAM provisionally
-See also [zram module](https://docs.kernel.org/admin-guide/blockdev/zram.html) and differences between [ZSTD & LZ4](https://engineering.fb.com/2016/08/31/core-infra/smaller-and-faster-data-compression-with-zstandard/).
+See also [zram module](https://docs.kernel.org/admin-guide/blockdev/zram.html) and differences between [ZSTD & LZ4](https://engineering.fb.com/2016/08/31/core-infra/smaller-and-faster-data-compression-with-zstandard/), anyway, even linux on ZFS use `zstd` instead of `lz4` & we do it too.
 
 1. Basic adjustments:
 
 ```
 modprobe zram
 
-zramctl /dev/zram0 --algorithm lz4 --size 128GiB
+zramctl /dev/zram0 --algorithm zstd --size 128GiB
 
 mkswap -U clear /dev/zram0
 
 swapon --priority 100 /dev/zram0
 ```
 
-* **Note:** you can use also `zstd` as compression algorithm instead of `lz4`, i prefer LZ4 ( `lz4` ) because is much faster, anyway it's depend of your used file-system on which one reside Linux. If you use `ext4` or `zfs` than you can use `lz4`, if you use `btrfs` than is (maybe) recommended the use of `zstd`.
+* **Note:** you can use also `lz4` as compression algorithm instead of `zstd`, i prefer LZ4 ( `lz4` ) because is much faster, anyway it's depend of your used file-system on which one reside Linux. If you use `ext4` or `zfs` than you can use `lz4` and/or `zstd`, if you use `btrfs` than is (maybe) recommended the use of `zstd`.
 
 2. To disable it again, either reboot or run:
 
@@ -160,7 +160,7 @@ nano /etc/udev/rules.d/99-zram.rules
 5. Insert following text and insert an empty line at end with the configuration-parameters:
 
 ```
-ACTION=="add", KERNEL=="zram0", ATTR{comp_algorithm}="lz4", ATTR{disksize}="128GiB", RUN="/usr/bin/mkswap -U clear /dev/%k", TAG+="systemd"
+ACTION=="add", KERNEL=="zram0", ATTR{comp_algorithm}="zstd", ATTR{disksize}="128GiB", RUN="/usr/bin/mkswap -U clear /dev/%k", TAG+="systemd"
 ```
 
 6. Now open `/etc/sftab`
@@ -202,7 +202,7 @@ zramctl --help
 
 ```
 NAME       DISKSIZE DATA COMPR ALGORITHM STREAMS ZERO-PAGES TOTAL MEM-LIMIT MEM-USED MIGRATED MOUNTPOINT
-/dev/zram0     128G   4K   41B lz4           16          0    4K        0B      16K       0B [SWAP]
+/dev/zram0     128G   4K   41B zstd           16          0    4K        0B      16K       0B [SWAP]
 
 ```
 
