@@ -85,7 +85,7 @@ ZSwap will prevent to use ZRAM properly, so disable ZSwap permanently, see also 
 * edit file: `/etc/kernel/cmdline` & insert after last option `zswap.enabled=0` , here an example:
 
 ```
-rw zswap.enabled=0 root=UUID=00bfb9fd-a31a-43c6-aea3-02d097db1894 quiet rw zswap.enabled=0 root=UUID=00bfb9fd-a31a-43c6-aea3-02d097db1894
+root=UUID=00bfb9fd-a31a-43c6-aea3-02d097db1894 rw quiet zswap.enabled=0
 
 ```
 
