@@ -205,6 +205,35 @@ NAME       DISKSIZE DATA COMPR ALGORITHM STREAMS ZERO-PAGES TOTAL MEM-LIMIT MEM-
 /dev/zram0     128G   4K   41B zstd           16          0    4K        0B      16K       0B [SWAP]
 
 ```
+### 7. Compress Linux-Image too!
+
+1. edit `/etc/mkinitcpio.conf`
+2. after `HOOKS` should be the the compressions-parameters like these:
+
+```
+# COMPRESSION
+# Use this to compress the initramfs image. By default, zstd compression
+# is used. Use 'cat' to create an uncompressed image.
+COMPRESSION="zstd"
+#COMPRESSION="gzip"
+#COMPRESSION="bzip2"
+#COMPRESSION="lzma"
+#COMPRESSION="xz"
+#COMPRESSION="lzop"
+#COMPRESSION="lz4"
+```
+* as you can see (in my case), the `zstd` compression is enabled because missing/without `#`, if this part is missing in your `/etc/mkinitcpio.conf`… just add following line:
+
+```
+COMPRESSION="zstd"
+```
+3. don't forget to recreate the kernels with new parameter as unders § "4. Presettings…/2. Update SystemD-Boot-entries…" explained:
+
+```
+reinstall-kernels
+
+```
+* **Note:** Latest now you should reboot your system❗️
 
 
-- [x] **Done!** **&** **ENJOY!** :wink:
+- [x] **Done❗️& ENJOY❗️** :wink:
