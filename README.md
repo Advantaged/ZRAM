@@ -100,7 +100,32 @@ reinstall-kernels
 
 * Now, if you open the files inside `/boot/efi/loader/entries/` you can see inside, of there stored files, all entries are modified exactly as above descrived.
 
-### 5. Configure ZRAM provisionally
+### 5. ZRAM made with `zram-geneartor` & at least as it works…
+* 1. Copy configuration-file at right folder:
+`sudo cp /usr/lib/systemd/zram-generator.conf /etc/systemd/zram-generator.conf`
+* 2. Modify destination-file as the user want:
+```
+[zram0] 
+zram-size = ram * 2
+compression-algorithm = zstd
+max-comp-streams = 16
+swap-priority = 180
+fs-type = swap
+```
+* **Notes:**
+    * `ram-size`, don't set any value but mathematical expressions like `ram`, `ram / 2` or (in my case) `ram * 2`
+    * `compression-algorithm` best algorithm to get 4-5-time compression is `zstd`.
+    * `max-compress-streams` set the maximum of threads available on your CPU.
+    * `swap-priority` default is 100, 180 is still moderate, some OS set it from 200 on-warts.
+    * `fs-type` better to specify fs-type as `swap`
+* 3. Enable "zram-generator & start it:
+`sudo systemctl enable --now systemd-zram-setup@zram0.service`
+* 4. Check ZRAM is working:
+    * To check if ZRAM is set up correctly, use: `swapon --show`
+    * You can also inspect the active ZRAM configuration: `cat /proc/swaps`
+    * Monitor the performance of ZRAM over time using: `zramctl` or `zramctl --output-all`
+
+### 6. Configure ZRAM (udev) provisionally
 See also [zram module](https://docs.kernel.org/admin-guide/blockdev/zram.html) and differences between [ZSTD & LZ4](https://engineering.fb.com/2016/08/31/core-infra/smaller-and-faster-data-compression-with-zstandard/), anyway, even linux on ZFS use `zstd` instead of `lz4` & we do it too.
 
 1. Basic adjustments:
@@ -115,7 +140,7 @@ mkswap -U clear /dev/zram0
 swapon --priority 100 /dev/zram0
 ```
 
-* **Note:** you can use also `lz4` as compression algorithm instead of `zstd`, i prefer LZ4 ( `lz4` ) because is much faster, anyway it's depend of your used file-system on which one reside Linux. If you use `ext4` or `zfs` than you can use `lz4` and/or `zstd`, if you use `btrfs` than is (maybe) recommended the use of `zstd`.
+* **Note:** you can use also `lz4` as compression algorithm instead of `zstd`, i prefer `zstd` because is much faster, anyway it's depend of your used file-system on which one reside Linux. If you use `ext4` than you can use `lz4` and/or `zstd`, if you use `btrfs` or `zfs` than is (maybe) recommended the use of `zstd`.
 
 2. To disable it again, either reboot or run:
 
@@ -127,7 +152,7 @@ modprobe -r zram
 echo 1 > /sys/module/zswap/parameters/enabled
 ```
 
-### 6. Make Changes permanently using UDEV-rules like every other "Data-Carrier" (DC) too.
+### 7. Make Changes permanently using UDEV-rules like every other "Data-Carrier" (DC) too.
 
 1. Assure `zswap` kernel-module is disabled...
 * Check with:
@@ -175,7 +200,7 @@ nano /etc/fstab
 /dev/zram0  none    swap    defaults,pri=100    0   0
 ```
 
-### 7. Settings-Check and -Control
+### 8. Settings-Check and -Control
 
 1. Check the ZSWAP-module is disabled with:
 
