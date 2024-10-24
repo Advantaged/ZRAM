@@ -7,8 +7,8 @@ ZRAM: Clear instructions, easy to setup, double your RAM-capacity
 [Arch-Linux Wiki](https://wiki.archlinux.org/title/Zram)
 * Following the Wiki and due the fact I have 64 GB RAM installed, I will set up a 128 GiB ZRAM, this mean, I will still have always 30,7 GiB RAM free :wink: + 128 GiB ZRAM on top, = 158,7 of total RAM minimum.
 
-* **Note:** Some Distro, like [CachyOS](https://cachyos.org/download/) already setup ZRAM🟰physical_RAM, in this case you don't need any steps. If you want double your ZRAM under CachyOS… just execute **§ 5.**. In all other case you can setup "RAM*2=ZRAM" with `zram-configurator` using **'§ 1.' till '§ 5.'** (where from § 2. till 4. according to your bootloader = choose only one of three options) and with `udev` excluding **§ 5.** (of course) & the two cahpter not matching your bootloader (§ 2. till 4.).
-    * CachyOS have already ZRAM=physical_RAM
+* **Note:** Some Distro, like [CachyOS](https://cachyos.org/download/) already setup ZRAM🟰physical_RAM, in this case you don't need any steps. If you want double your ZRAM under CachyOS… just execute **§ 5.**. In all other case you can setup "RAM*2=ZRAM" with `zram-configurator` using **'§ 1.' till '§ 5.'** (where from § 2. till 4. according to your bootloader = choose only one of three options) and with `udev` excluding **§ 5.** (of course) & the two cahpter not matching your bootloader (§ 2. till 4.), but including from '§ 6.' till '§ 9.'.
+    * CachyOS have already ZRAM🟰physical_RAM
     * CachyOS double ZRAM, execute only '§ 5.'
     * Other OS/Distro through `zram-generator`… '§ 1.'➕'§ 2. or § 3. or § 4.' according to you bootloader➕'§ 5.'.
     * Other OS/Distro through `udev`… '§ 1.'➕'§ 2. or § 3. or § 4.' according to you bootloader, exclude '§ 5.' but include the remain chapters ('§ 6.' till '§ 9.').        
