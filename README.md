@@ -156,6 +156,7 @@ fs-type = swap
       ```
 
 * Further optimization, like in the [Arch-Wiki](https://wiki.archlinux.org/title/Zram) under § 2.3 explained, are made automatically❗️
+* See [here](https://github.com/Advantaged/ZRAM/blob/main/ZRAM/2024-10-24_11-32_partitionmanager.jpg) the results in `partitionmanager`❗️
 
 ### 6. Configure ZRAM (udev) provisionally
 See also [zram module](https://docs.kernel.org/admin-guide/blockdev/zram.html) and differences between [ZSTD & LZ4](https://engineering.fb.com/2016/08/31/core-infra/smaller-and-faster-data-compression-with-zstandard/), anyway, even linux on ZFS use `zstd` instead of `lz4` & we do it too.
