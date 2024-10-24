@@ -102,11 +102,11 @@ reinstall-kernels
 
 ### 5. ZRAM made with `zram-geneartor` & at least as it works…
 
-* 1. Copy configuration-file at right folder:
+1. Copy configuration-file at right folder:
 
 `sudo cp /usr/lib/systemd/zram-generator.conf /etc/systemd/zram-generator.conf`
 
-* 2. Modify destination-file as the user want:
+2. Modify destination-file as the user want:
 
 ```
 [zram0] 
@@ -122,14 +122,24 @@ fs-type = swap
     * `max-compress-streams` set the maximum of threads available on your CPU.
     * `swap-priority` default is 100, 180 is still moderate, some OS set it from 200 on-warts.
     * `fs-type` better to specify fs-type as `swap`
-* 3. Enable "zram-generator & start it:
+
+3. Enable "zram-generator & start it:
 
 `sudo systemctl enable --now systemd-zram-setup@zram0.service`
 
-* 4. Check ZRAM is working:
-    * To check if ZRAM is set up correctly, use: `swapon --show`
-    * You can also inspect the active ZRAM configuration: `cat /proc/swaps`
-    * Monitor the performance of ZRAM over time using: `zramctl` or `zramctl --output-all`
+4. Check ZRAM is working:
+    * To check if ZRAM is set up correctly, use: `swapon --show`… output:
+      `NAME       TYPE        SIZE USED PRIO
+      /dev/zram0 partition 125,4G   0B  180`
+
+    * You can also inspect the active ZRAM configuration: `cat /proc/swaps`… output:
+      `Filename                                Type            Size            Used            Priority
+      /dev/zram0                              partition       131473404       0               180`
+    * Monitor the performance of ZRAM over time using: `zramctl` or `zramctl --output-all`… output:
+      `NAME       DISKSIZE DATA COMPR ALGORITHM STREAMS ZERO-PAGES TOTAL MEM-LIMIT MEM-USED MIGRATED MOUNTPOINT
+      /dev/zram0   125,4G   4K   68B zstd           16          0   20K        0B      20K       0B [SWAP]`
+
+* Further optimization, like in the [Arch-Wiki](https://wiki.archlinux.org/title/Zram) under § 2.3 explained, are made automatically❗️
 
 ### 6. Configure ZRAM (udev) provisionally
 See also [zram module](https://docs.kernel.org/admin-guide/blockdev/zram.html) and differences between [ZSTD & LZ4](https://engineering.fb.com/2016/08/31/core-infra/smaller-and-faster-data-compression-with-zstandard/), anyway, even linux on ZFS use `zstd` instead of `lz4` & we do it too.
