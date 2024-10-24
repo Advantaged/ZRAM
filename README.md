@@ -129,13 +129,16 @@ fs-type = swap
 
 4. Check ZRAM is working:
     * To check if ZRAM is set up correctly, use: `swapon --show`… output:
+      
       `NAME       TYPE        SIZE USED PRIO
       /dev/zram0 partition 125,4G   0B  180`
 
     * You can also inspect the active ZRAM configuration: `cat /proc/swaps`… output:
+      
       `Filename                                Type            Size            Used            Priority
       /dev/zram0                              partition       131473404       0               180`
     * Monitor the performance of ZRAM over time using: `zramctl` or `zramctl --output-all`… output:
+      
       `NAME       DISKSIZE DATA COMPR ALGORITHM STREAMS ZERO-PAGES TOTAL MEM-LIMIT MEM-USED MIGRATED MOUNTPOINT
       /dev/zram0   125,4G   4K   68B zstd           16          0   20K        0B      20K       0B [SWAP]`
 
