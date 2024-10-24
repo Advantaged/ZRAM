@@ -103,9 +103,11 @@ reinstall-kernels
 ### 5. ZRAM made with `zram-geneartor` & at least as it works…
 
 * 1. Copy configuration-file at right folder:
+
 `sudo cp /usr/lib/systemd/zram-generator.conf /etc/systemd/zram-generator.conf`
 
 * 2. Modify destination-file as the user want:
+
 ```
 [zram0] 
 zram-size = ram * 2
@@ -121,7 +123,9 @@ fs-type = swap
     * `swap-priority` default is 100, 180 is still moderate, some OS set it from 200 on-warts.
     * `fs-type` better to specify fs-type as `swap`
 * 3. Enable "zram-generator & start it:
+
 `sudo systemctl enable --now systemd-zram-setup@zram0.service`
+
 * 4. Check ZRAM is working:
     * To check if ZRAM is set up correctly, use: `swapon --show`
     * You can also inspect the active ZRAM configuration: `cat /proc/swaps`
