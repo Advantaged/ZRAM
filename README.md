@@ -101,8 +101,10 @@ reinstall-kernels
 * Now, if you open the files inside `/boot/efi/loader/entries/` you can see inside, of there stored files, all entries are modified exactly as above descrived.
 
 ### 5. ZRAM made with `zram-geneartor` & at least as it works…
+
 * 1. Copy configuration-file at right folder:
 `sudo cp /usr/lib/systemd/zram-generator.conf /etc/systemd/zram-generator.conf`
+
 * 2. Modify destination-file as the user want:
 ```
 [zram0] 
